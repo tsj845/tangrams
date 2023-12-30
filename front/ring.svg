@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="46.5" stroke-width="7" stroke="black" fill="none" />
+    <linearGradient id="rainbow">
+        <stop offset="0%" stop-color="red" />
+        <stop offset="20%" stop-color="orange" />
+        <stop offset="40%" stop-color="yellow" />
+        <stop offset="60%" stop-color="green" />
+        <stop offset="80%" stop-color="blue" />
+        <stop offset="100%" stop-color="purple" />
+    </linearGradient>
+    <linearGradient id="rgrad">
+        <stop offset="0%" stop-color="lightgreen" />
+        <stop offset="25%" stop-color="skyblue" />
+        <stop offset="75%" stop-color="blueviolet" color="" />
+        <stop offset="100%" stop-color="pink" />
+    </linearGradient>
+    <circle cx="50" cy="50" r="46.5" stroke-width="5" stroke="url(#rgrad)" fill="none" />
+</svg>

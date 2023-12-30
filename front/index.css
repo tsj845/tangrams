@@ -1,0 +1,127 @@
+/* actual tangrams */
+div#tangram-grp {
+    /* placeholders for stuff calculated by JS */
+    --jsm-hypot-full-width: 0px;
+    --jsm-stri-width: 0px;
+    --jsm-para-h: 0px;
+    --jsm-para-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+
+    /* pretty border */
+    border: solid black 2px;
+    border-radius: 2%;
+
+    /* sizing & positioning */
+    width: 50vmin;
+    height: 50vmin;
+    position: absolute;
+    top: calc(50vh - 25vmin - 1px);
+    left: calc(50vw - 25vmin - 1px);
+    
+    /* amount to move tangrams by */
+    --base-mod: 25vmin;
+
+    div.tangram {
+        background-color: var(--color);
+        position: absolute;
+        left: calc(-0.5 * var(--size));
+        top: calc(-0.5 * var(--size));
+        transform-origin: 50% 50%;
+        transform: translate(calc(var(--px, 0) * var(--base-mod)), calc(var(--py, 0) * var(--base-mod))) rotate(var(--rot, 0deg));
+        width: var(--size);
+        height: var(--size);
+    }
+    div.smoltri, div.bigtri, div.medtri {
+        clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    }
+    div.tangram.para {
+        --size: var(--jsm-para-h);
+        --ws: 37.5vmin;
+        width: var(--ws);
+        left: calc(-0.5 * var(--ws));
+        clip-path: var(--jsm-para-path);
+    }
+    div.smoltri, div.square {
+        --size: var(--jsm-stri-width);
+    }
+    div.medtri {
+        --size: 25vmin;
+    }
+    div.bigtri {
+        --size: calc(var(--jsm-hypot-full-width) / 2);
+    }
+}
+
+/* ui interactions */
+div#ui-container {
+    div#abtncont {
+        position: absolute;
+        width: 25vmin;
+        height: 25vmin;
+        left: 0px;
+        top: 0px;
+    }
+    div.arrbtn {
+        position: absolute;
+        --size: 10vmin;
+        top: calc(var(--y) * 1vmin - 0.5 * var(--size));
+        left: calc(var(--x) * 1vmin - 0.5 * var(--size));
+        transform-origin: 50% 50%;
+        transform: rotate(calc(var(--rot, 0) * 1deg));
+        background-color: gray;
+        width: var(--size);
+        height: var(--size);
+        clip-path: polygon(50% 0%, 100% 37.5%, 75% 37.5%, 75% 100%, 25% 100%, 25% 37.5%, 0% 37.5%);
+    }
+    div.arrbtn:not([data-ena=true]) {
+        background-color: lightgray;
+    }
+    div.arrbtn[data-ena=true]:hover {
+        background-color: #aaa;
+    }
+    div.arrbtn[data-ena=true]:active {
+        background-color: gray;
+    }
+}
+
+@keyframes explode {
+    0% {
+        opacity: 100%;
+        width: var(--ssize);
+        height: var(--ssize);
+        left: calc(var(--x) - 0.5 * var(--ssize));
+        top: calc(var(--y) - 0.5 * var(--ssize));
+    }
+    80% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+        width: var(--esize);
+        height: var(--esize);
+        left: calc(var(--x) - 0.5 * var(--esize));
+        top: calc(var(--y) - 0.5 * var(--esize));
+    }
+}
+
+.sploder {
+    /* border-style: solid; */
+    /* border-color: var(--c); */
+    /* border-radius: 50%; */
+    background-image: url("./ring.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* --ssize: 20px; */
+    --ssize: 50px;
+    --esize: calc(var(--ssize) * 2 + 15px);
+    width: var(--ssize);
+    height: var(--ssize);
+    left: calc(var(--x) - 0.5 * var(--ssize));
+    top: calc(var(--y) - 0.5 * var(--ssize));
+    position: absolute;
+}
+
+.sploder.running {
+    animation: explode linear forwards;
+    animation-duration: 2s;
+    animation-delay: 0s;
+}
