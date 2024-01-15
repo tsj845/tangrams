@@ -5,6 +5,7 @@ div#tangram-grp {
     --jsm-stri-width: 0px;
     --jsm-para-h: 0px;
     --jsm-para-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    --jsm-sqrt-two: 0;
 
     /* pretty border */
     border: solid black 2px;
@@ -20,34 +21,77 @@ div#tangram-grp {
     /* amount to move tangrams by */
     --base-mod: 25vmin;
 
+    /* color of tangram rotation handles */
+    --handle-c: lime;
+
     div.tangram {
         background-color: var(--color);
+        width: var(--size);
+        height: var(--size);
+    }
+    div.tgram-container {
         position: absolute;
         left: calc(-0.5 * var(--size));
         top: calc(-0.5 * var(--size));
         transform-origin: 50% 50%;
-        transform: translate(calc(var(--px, 0) * var(--base-mod)), calc(var(--py, 0) * var(--base-mod))) rotate(var(--rot, 0deg));
+        transform: translateX(1vmin) translateY(-1.5vmin) translate(calc(var(--px, 0) * var(--base-mod)), calc(var(--py, 0) * var(--base-mod))) rotate(var(--rot, 0deg));
         width: var(--size);
         height: var(--size);
+        div.tangram-arrow {
+            transform-origin: center bottom;
+            transform: translateX(-0.5vmin) rotate(var(--corrective-rotation));
+            width: 1vmin;
+            --hsize: calc(var(--size) * 1.5 * var(--jsm-sqrt-two) / 2);
+            height: var(--hsize);
+            position: absolute;
+            /* top: calc(var(--size) - var(--hsize)); */
+            /* top: calc(calc(var(--base-mod) * var(--py)) - var(--size)); */
+            bottom: 50%;
+            left: 50%;
+            /* left: calc(var(--size) - 0.5vmin); */
+            background-color: var(--handle-c);
+        }
     }
     div.smoltri, div.bigtri, div.medtri {
         clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
     }
-    div.tangram.para {
+    div.square {
+        clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
+    }
+    .tgram-container:has(> .bigtri), .tgram-container:has(> .medtri), .tgram-container:has(> .smoltri) {
+        /* --corrective-rotation: 45deg; */
+        --corrective-rotation: 0deg;
+    }
+    .tgram-container:has(> .square) {
+        --corrective-rotation: 0deg;
+    }
+    .tgram-container:has(> .para) {
         --size: var(--jsm-para-h);
+    }
+    .tgram-container:has(> .smoltri), .tgram-container:has(> .square) {
+        --size: var(--jsm-stri-width);
+    }
+    .tgram-container:has(> .medtri) {
+        --size: 25vmin;
+    }
+    .tgram-container:has(> .bigtri) {
+        --size: calc(var(--jsm-hypot-full-width) / 2);
+    }
+    div.tangram.para {
+        /* --size: var(--jsm-para-h); */
         --ws: 37.5vmin;
         width: var(--ws);
         left: calc(-0.5 * var(--ws));
         clip-path: var(--jsm-para-path);
     }
     div.smoltri, div.square {
-        --size: var(--jsm-stri-width);
+        /* --size: var(--jsm-stri-width); */
     }
     div.medtri {
-        --size: 25vmin;
+        /* --size: 25vmin; */
     }
     div.bigtri {
-        --size: calc(var(--jsm-hypot-full-width) / 2);
+        /* --size: calc(var(--jsm-hypot-full-width) / 2); */
     }
 }
 
@@ -124,4 +168,23 @@ div#ui-container {
     animation: explode linear forwards;
     animation-duration: 2s;
     animation-delay: 0s;
+}
+
+.axis {
+    position: absolute;
+    background-color: crimson;
+}
+
+#yaxis {
+    width: 2px;
+    height: 100vh;
+    left: calc(50vw - 1px);
+    top: 0px;
+}
+
+#xaxis {
+    width: 100vw;
+    height: 2px;
+    left: 0px;
+    top: calc(50vh - 1px);
 }
